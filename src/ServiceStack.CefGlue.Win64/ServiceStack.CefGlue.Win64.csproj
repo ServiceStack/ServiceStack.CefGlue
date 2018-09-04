@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- dotnet publish -c release -r win-x64 -->
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>ServiceStack.CefGlue.Win64</AssemblyName>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Content Include="locales\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="swiftshader\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="*.pak">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="*.lib">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="*.dat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="*.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="*.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="*.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceStack.CefGlue\ServiceStack.CefGlue.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WinApi" Version="4.0.0" />
+  </ItemGroup>
+
+</Project>

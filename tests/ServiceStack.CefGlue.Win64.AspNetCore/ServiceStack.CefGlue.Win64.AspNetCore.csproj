@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!-- dotnet publish -c release -r win-x64 -->
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <Platforms>x64</Platforms>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <AssemblyName>webapp</AssemblyName>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ServiceStack.CefGlue\ServiceStack.CefGlue.csproj" />
+    <ProjectReference Include="..\..\src\ServiceStack.CefGlue.Win64\ServiceStack.CefGlue.Win64.csproj" />
+    <PackageReference Include="WinApi" Version="4.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.*" />
+    <PackageReference Include="ServiceStack" Version="5.*" />
+  </ItemGroup>
+
+</Project>
