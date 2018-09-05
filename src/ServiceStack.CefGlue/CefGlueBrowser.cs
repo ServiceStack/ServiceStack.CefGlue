@@ -12,12 +12,12 @@ namespace ServiceStack.CefGlue
         private WebBrowser webBrowser;
         private WebClient client;
 
-        public CefGlueBrowser(CefGlueConfig config)
+        public CefGlueBrowser(IntPtr parentHandle, CefGlueConfig config)
         {
             this.config = config;
 
             var windowInfo = CefWindowInfo.Create();
-            windowInfo.SetAsChild(config.ParentHandle, new CefRectangle(0, 0, config.Width, config.Height));
+            windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, config.Width, config.Height));
 
             this.webBrowser = new WebBrowser(this, config.BrowserSettings, config.StartUrl);
             this.webBrowser.Created += WebBrowser_Created;

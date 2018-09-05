@@ -19,8 +19,6 @@ namespace ServiceStack.CefGlue.Win64
             CefRuntime.Load();
             CefRuntime.EnableHighDpiSupport();
 
-            context.ParentHandle = this.Handle;
-
             var argv = context.Args;
             if (CefRuntime.Platform != CefRuntimePlatform.Windows)
             {
@@ -39,7 +37,7 @@ namespace ServiceStack.CefGlue.Win64
 
             CefRuntime.Initialize(mainArgs, context.CefSettings, app, IntPtr.Zero);
 
-            this.browser = new CefGlueBrowser(context);
+            this.browser = new CefGlueBrowser(this.Handle, context);
 
             base.OnCreate(ref packet);
         }

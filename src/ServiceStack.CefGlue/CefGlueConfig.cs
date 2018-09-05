@@ -51,7 +51,6 @@ namespace ServiceStack.CefGlue
         public string[] Args { get; set; }
         public CefSettings CefSettings { get; set; }
         public CefBrowserSettings BrowserSettings { get; set; }
-        public IntPtr ParentHandle { get; set; }
         public string StartUrl { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }

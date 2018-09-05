@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <!-- dotnet publish -c release -r win-x64 -->
+    <Version>0.0.1</Version>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>ServiceStack.CefGlue.Win64</AssemblyName>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+    <ContentTargetFolders>contentFiles</ContentTargetFolders>
   </PropertyGroup>
-
 
   <ItemGroup>
     <Content Include="locales\*.*">
@@ -36,7 +37,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  
   
   <ItemGroup>
     <ProjectReference Include="..\ServiceStack.CefGlue\ServiceStack.CefGlue.csproj" />

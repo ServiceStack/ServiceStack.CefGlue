@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 
 namespace ServiceStack.CefGlue.Win64.AspNetCore
@@ -18,7 +17,7 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
                 .UseUrls(startUrl)
                 .Build();
 
-            var startTask = host.StartAsync();
+            host.StartAsync();
 
             var config = new CefGlueConfig
             {
