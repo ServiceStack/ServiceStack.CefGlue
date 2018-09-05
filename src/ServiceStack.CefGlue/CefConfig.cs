@@ -5,11 +5,11 @@ using Xilium.CefGlue;
 
 namespace ServiceStack.CefGlue
 {
-    public class CefGlueConfig
+    public class CefConfig
     {
-        public CefGlueConfig() : this(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath)) {}
+        public CefConfig() : this(Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath)) {}
         
-        public CefGlueConfig(string cefPath)
+        public CefConfig(string cefPath)
         {
             CefPath = cefPath;
             var processPath = File.Exists(Path.Combine(cefPath, "cefclient.exe"))
@@ -22,14 +22,14 @@ namespace ServiceStack.CefGlue
                 LocalesDirPath = Path.Combine(cefPath, "locales"),
                 Locale = "en-US",
                 MultiThreadedMessageLoop = CefRuntime.Platform == CefRuntimePlatform.Windows,
-                LogSeverity = CefLogSeverity.Verbose,
+                LogSeverity = CefLogSeverity.Info,
                 LogFile = "cef.log",
                 ResourcesDirPath = cefPath,
-                NoSandbox = true,
+                //NoSandbox = true,
                 BrowserSubprocessPath = processPath,
                 RemoteDebuggingPort = 20480,
             };
-            BrowserSettings = new CefBrowserSettings
+            CefBrowserSettings = new CefBrowserSettings
             {
                 DefaultEncoding = "UTF-8",
                 FileAccessFromFileUrls = CefState.Enabled,
@@ -50,8 +50,10 @@ namespace ServiceStack.CefGlue
         public string CefPath { get; set; }
         public string[] Args { get; set; }
         public CefSettings CefSettings { get; set; }
-        public CefBrowserSettings BrowserSettings { get; set; }
+        public CefBrowserSettings CefBrowserSettings { get; set; }
         public string StartUrl { get; set; }
+        public int? X { get; set; }
+        public int? Y { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public bool CenterToScreen { get; set; }

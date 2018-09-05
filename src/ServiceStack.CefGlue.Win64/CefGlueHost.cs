@@ -7,8 +7,8 @@ namespace ServiceStack.CefGlue.Win64
 {
     internal class CefGlueHost : EventedWindowCore
     {
-        private readonly CefGlueConfig context;
-        public CefGlueHost(CefGlueConfig context) => this.context = context;
+        private readonly CefConfig context;
+        public CefGlueHost(CefConfig context) => this.context = context;
 
         public CefGlueBrowser browser;
 

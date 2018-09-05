@@ -12,13 +12,13 @@ namespace ServiceStack.CefGlue
         public static CefPlatformWindows Provider => provider ?? (provider = new CefPlatformWindows());
         private CefPlatformWindows() { }
 
-        public static int Start(CefGlueConfig config)
+        public static int Start(CefConfig config)
         {
             Instance = Provider;
             return Provider.Run(config);
         }
 
-        public int Run(CefGlueConfig config)
+        public int Run(CefConfig config)
         {
             if (config.Width == 0 || config.Height == 0)
             {
@@ -38,7 +38,14 @@ namespace ServiceStack.CefGlue
             {
 
                 window.SetSize(config.Width, config.Height);
-                window.CenterToScreen();
+                if (config.CenterToScreen)
+                {
+                    window.CenterToScreen();
+                }
+                else if (config.X != null || config.Y != null)
+                {
+                    window.SetPosition(config.X.GetValueOrDefault(), config.Y.GetValueOrDefault());
+                }
                 window.Show();
 
                 //startTask.Wait();

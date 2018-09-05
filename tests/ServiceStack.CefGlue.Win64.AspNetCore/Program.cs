@@ -19,11 +19,16 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
 
             host.StartAsync();
 
-            var config = new CefGlueConfig
+            var config = new CefConfig
             {
                 Args = args,
                 StartUrl = startUrl,
             };
+            
+#if DEBUG
+            config.HideConsoleWindow = true;
+            config.CefSettings.LogSeverity = Xilium.CefGlue.CefLogSeverity.Verbose;
+#endif
 
             return CefPlatformWindows.Start(config);
         }

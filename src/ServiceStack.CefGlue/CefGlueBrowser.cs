@@ -8,22 +8,22 @@ namespace ServiceStack.CefGlue
     {
         private CefBrowser browser;
         private IntPtr browserWindowHandle;
-        private CefGlueConfig config;
+        private CefConfig config;
         private WebBrowser webBrowser;
         private WebClient client;
 
-        public CefGlueBrowser(IntPtr parentHandle, CefGlueConfig config)
+        public CefGlueBrowser(IntPtr parentHandle, CefConfig config)
         {
             this.config = config;
 
             var windowInfo = CefWindowInfo.Create();
             windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, config.Width, config.Height));
 
-            this.webBrowser = new WebBrowser(this, config.BrowserSettings, config.StartUrl);
+            this.webBrowser = new WebBrowser(this, config.CefBrowserSettings, config.StartUrl);
             this.webBrowser.Created += WebBrowser_Created;
             this.client = new WebClient(this.webBrowser);
 
-            CefBrowserHost.CreateBrowser(windowInfo, client, config.BrowserSettings, config.StartUrl);
+            CefBrowserHost.CreateBrowser(windowInfo, client, config.CefBrowserSettings, config.StartUrl);
         }
 
         public string Title { get; private set; }
