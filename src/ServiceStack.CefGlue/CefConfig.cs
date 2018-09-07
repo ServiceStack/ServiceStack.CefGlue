@@ -58,5 +58,11 @@ namespace ServiceStack.CefGlue
         public int Height { get; set; }
         public bool CenterToScreen { get; set; }
         public bool HideConsoleWindow { get; set; }
+
+        public bool DevTools
+        {
+            get => CefSettings.RemoteDebuggingPort != 0;
+            set => CefSettings.RemoteDebuggingPort = 0;
+        }
     }
 }

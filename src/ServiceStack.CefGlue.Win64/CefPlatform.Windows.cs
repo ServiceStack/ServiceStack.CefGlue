@@ -20,12 +20,10 @@ namespace ServiceStack.CefGlue
 
         public int Run(CefConfig config)
         {
-            if (config.Width == 0 || config.Height == 0)
-            {
-                var res = Instance.GetScreenResolution();
-                config.Width = (int)(res.Width * .75);
-                config.Height = (int)(res.Height * .75);
-            }
+            var res = Instance.GetScreenResolution();
+            var scaleFactor = GetScalingFactor(GetDC(IntPtr.Zero));
+            config.Width = (int)(config.Width > 0 ? config.Width * scaleFactor : res.Width * .75);
+            config.Height = (int)(config.Height > 0 ? config.Height * scaleFactor : res.Height * .75);
             
             if (config.HideConsoleWindow)
                 Instance.HideConsoleWindow();
