@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- dotnet publish -c release -r win-x64 -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <!-- dotnet publish -c release -r win-x64 -->
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <Platforms>x64</Platforms>

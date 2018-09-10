@@ -7,13 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStack.CefGlue", "Ser
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStack.CefGlue.Win64", "ServiceStack.CefGlue.Win64\ServiceStack.CefGlue.Win64.csproj", "{8C9698D7-7135-434F-80AB-7AEF92FA2E90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceStack.CefGlue.Win64.AspNetCore", "..\tests\ServiceStack.CefGlue.Win64.AspNetCore\ServiceStack.CefGlue.Win64.AspNetCore.csproj", "{C6EEFFF8-AE32-49D7-9701-8750AFB31015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceStack.CefGlue.Win64.AspNetCore", "..\tests\ServiceStack.CefGlue.Win64.AspNetCore\ServiceStack.CefGlue.Win64.AspNetCore.csproj", "{C6EEFFF8-AE32-49D7-9701-8750AFB31015}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8315A478-2459-44FA-B3B0-0C66D406AB0A}"
-ProjectSection(SolutionItems) = preProject
-	..\build\copy.bat = ..\build\copy.bat
-	..\build\prepare.bat = ..\build\prepare.bat
-EndProjectSection
+	ProjectSection(SolutionItems) = preProject
+		..\build\build.bat = ..\build\build.bat
+		..\build\build.proj = ..\build\build.proj
+		..\build\build.tasks = ..\build\build.tasks
+		..\build\copy.bat = ..\build\copy.bat
+		..\build\prepare.bat = ..\build\prepare.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +32,8 @@ Global
 		{8C9698D7-7135-434F-80AB-7AEF92FA2E90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C9698D7-7135-434F-80AB-7AEF92FA2E90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C9698D7-7135-434F-80AB-7AEF92FA2E90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6EEFFF8-AE32-49D7-9701-8750AFB31015}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6EEFFF8-AE32-49D7-9701-8750AFB31015}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6EEFFF8-AE32-49D7-9701-8750AFB31015}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6EEFFF8-AE32-49D7-9701-8750AFB31015}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6EEFFF8-AE32-49D7-9701-8750AFB31015}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{C6EEFFF8-AE32-49D7-9701-8750AFB31015}.Release|Any CPU.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
