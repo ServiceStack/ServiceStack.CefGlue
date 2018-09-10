@@ -52,7 +52,7 @@
     <!-- Update Version -->
     <ItemGroup>
       <RegexTransform Include="$(SrcDir)/**/AssemblyInfo.cs">
-        <Find>AssemblyFileVersion\(\"\d+\.\d+\.\d+\.\d+\"\)</Find>
+        <Find>AssemblyFileVersion\(\"5\.\d+\.\d+\.\d+\"\)</Find>
         <ReplaceWith>AssemblyFileVersion("$(Version)")</ReplaceWith>
       </RegexTransform>
 
@@ -71,7 +71,9 @@
 
     <ItemGroup>
       <CefGlueFiles Include="$(SrcDir)/ServiceStack.CefGlue/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.*"></CefGlueFiles>
-      <CefGlueWinFiles Include="$(SrcDir)/ServiceStack.Memory/bin/$(Configuration)/netcoreapp2.1/ServiceStack.Memory.*"></CefGlueWinFiles>
+      <CefGlueWin64Files Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/*.*"></CefGlueWin64Files>
+      <CefGlueWin64LocalesFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/locales/*.*"></CefGlueWin64LocalesFiles>
+      <CefGlueWin64SwiftShaderFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/swiftshader/*.*"></CefGlueWin64SwiftShaderFiles>
     </ItemGroup>
 
     <RemoveDir Directories="$(SrcDir)/ServiceStack.CefGlue/obj" />
@@ -88,7 +90,9 @@
 
     <!-- ServiceStack.CefGlue.Win64 -->
     <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0')" />
-    <Copy SourceFiles="%(CefGlueFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" />
+    <Copy SourceFiles="%(CefGlueWin64Files.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" />
+    <Copy SourceFiles="%(CefGlueWin64LocalesFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0/locales" />
+    <Copy SourceFiles="%(CefGlueWin64SwiftShaderFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0/swiftshader" />
 
     <Exec Command="&quot;$(NuGetPath)&quot; pack &quot;$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/ServiceStack.CefGlue.Win64.nuspec&quot; -OutputDirectory &quot;$(NuGetPackageDir)&quot; -Version $(PackageVersion) -Symbols"
           LogStandardErrorAsError="true" />
