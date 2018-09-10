@@ -7,7 +7,7 @@
     <authors>ServiceStack</authors>
     <owners>ServiceStack</owners>
     <summary>Create self-contained .NET Core Windows (x64) Chromium Embedded Desktop Apps</summary>
-    <Description>Easily view and deploy any ServiceStack .NET Core Web App in a self-contained Chrome CEF Browser (Win64)</Description>
+    <description>Easily view and deploy any ServiceStack .NET Core Web App in a self-contained Chrome CEF Browser (Win64)</description>
     <projectUrl>https://github.com/ServiceStack/ServiceStack.CefGlue</projectUrl>
     <licenseUrl>https://servicestack.net/terms</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>

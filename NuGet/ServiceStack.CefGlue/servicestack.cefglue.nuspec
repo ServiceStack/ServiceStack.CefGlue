@@ -7,6 +7,7 @@
     <authors>ServiceStack</authors> 
     <owners>ServiceStack</owners>
     <summary>.NET Standard 2.0 builds of CefGlue</summary>
+    <description>.NET Standard 2.0 builds of Xilium.CefGlue for creating .NET Core Chromium Desktop Apps</description>
     <projectUrl>https://github.com/ServiceStack/ServiceStack.CefGlue</projectUrl>
     <licenseUrl>https://servicestack.net/terms</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
