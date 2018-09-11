@@ -297,7 +297,7 @@ namespace ServiceStack.CefGlue
                     host.ShowDevTools(windowInfo, new DevToolsWebClient(), new CefBrowserSettings(), new CefPoint());
                 }
     
-                var altDown = (keyEvent.Modifiers | CefEventFlags.AltDown) == CefEventFlags.AltDown;
+                var altDown = (CefEventFlags.AltDown | keyEvent.Modifiers) == CefEventFlags.AltDown;
                 if (core.Config.EnableNavigationKeys && altDown)
                 {
                     if (keyEvent.WindowsKeyCode == KeyCodes.Left && browser.CanGoBack)
@@ -307,7 +307,7 @@ namespace ServiceStack.CefGlue
                 }
 
                 if ((keyEvent.WindowsKeyCode == KeyCodes.F5 ||
-                     keyEvent.WindowsKeyCode == KeyCodes.R && (keyEvent.Modifiers | CefEventFlags.ControlDown) == CefEventFlags.ControlDown) && 
+                     keyEvent.WindowsKeyCode == KeyCodes.R && (CefEventFlags.ControlDown | keyEvent.Modifiers) == CefEventFlags.ControlDown) && 
                      core.Config.EnableReload)
                 {
                     browser.Reload();
