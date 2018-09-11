@@ -6,6 +6,13 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
 {
     class Program
     {
+        
+#if DEBUG
+        private static bool Debug = true;
+#else
+        private static bool Debug = false;
+#endif
+
         static int Main(string[] args)
         {
             var startUrl = Environment.GetEnvironmentVariable("ASPNETCORE_URLS") ?? "http://localhost:5000/";
@@ -18,18 +25,13 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
                 .Build();
 
             host.StartAsync();
-
-            var config = new CefConfig
+            
+            var config = new CefConfig(Debug)
             {
                 Args = args,
                 StartUrl = startUrl,
             };
             
-#if DEBUG
-            config.HideConsoleWindow = true;
-            config.CefSettings.LogSeverity = Xilium.CefGlue.CefLogSeverity.Verbose;
-#endif
-
             return CefPlatformWindows.Start(config);
         }
     }

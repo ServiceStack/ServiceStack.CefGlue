@@ -7,33 +7,32 @@ namespace ServiceStack.CefGlue
 {
     public sealed class WebBrowser
     {
-        private readonly object owner;
-        private readonly CefBrowserSettings settings;
-        private CefClient client;
-        private CefBrowser browser;
         private IntPtr windowHandle;
 
         private bool created;
 
-        public WebBrowser(object owner, CefBrowserSettings settings, string startUrl)
+        public CefClient Client { get; private set; }
+        public CefBrowser CefBrowser { get; private set; }
+
+        public CefGlueBrowser Host { get; }
+        public CefConfig Config => Host.Config;
+        public CefApp App => Host.App;
+
+        public WebBrowser(CefGlueBrowser host)
         {
-            this.owner = owner;
-            this.settings = settings;
-            StartUrl = startUrl;
+            this.Host = host;
         }
 
         public string StartUrl { get; set; }
 
-        public CefBrowser CefBrowser => browser;
-
         public void Create(CefWindowInfo windowInfo)
         {
-            if (client == null)
+            if (Client == null)
             {
-                client = new WebClient(this);
+                Client = new WebClient(this);
             }
 
-            CefBrowserHost.CreateBrowser(windowInfo, client, settings, StartUrl);
+            CefBrowserHost.CreateBrowser(windowInfo, Client, Host.Config.CefBrowserSettings, StartUrl);
         }
 
         public event EventHandler Created;
@@ -41,21 +40,20 @@ namespace ServiceStack.CefGlue
         internal void OnCreated(CefBrowser browser)
         {
             created = true;
-            this.browser = browser;
-
+            this.CefBrowser = browser;
+            
             var handler = Created;
             handler?.Invoke(this, EventArgs.Empty);
         }
 
         public void Close()
         {
-            if (browser != null)
+            if (Host.WebBrowser != null)
             {
-                var host = browser.GetHost();
-                host.CloseBrowser(true);
-                host.Dispose();
-                browser.Dispose();
-                browser = null;
+                var browserHost = Host.CefBrowser.GetHost();
+                browserHost.CloseBrowser(true);
+                browserHost.Dispose();
+                Host.DisposeCefBrowser();
             }
         }
 
@@ -90,9 +88,17 @@ namespace ServiceStack.CefGlue
             var handler = LoadingStateChanged;
             handler?.Invoke(this, new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward));
         }
+
+        public void Log(string message)
+        {
+            if (!Config.Debug)
+                return;
+            
+            Console.WriteLine(message);
+        }
     }
 
-    internal sealed class WebClient : CefClient
+    public sealed class WebClient : CefClient
     {
         internal static bool DumpProcessMessages { get; set; }
 
@@ -100,6 +106,7 @@ namespace ServiceStack.CefGlue
         private readonly WebLifeSpanHandler lifeSpanHandler;
         private readonly WebDisplayHandler displayHandler;
         private readonly WebLoadHandler loadHandler;
+        private readonly WebKeyboardHandler keyboardHandler;
 
         public WebClient(WebBrowser core)
         {
@@ -107,22 +114,13 @@ namespace ServiceStack.CefGlue
             lifeSpanHandler = new WebLifeSpanHandler(this.core);
             displayHandler = new WebDisplayHandler(this.core);
             loadHandler = new WebLoadHandler(this.core);
+            keyboardHandler = new WebKeyboardHandler(this.core);
         }
 
-        protected override CefLifeSpanHandler GetLifeSpanHandler()
-        {
-            return lifeSpanHandler;
-        }
-
-        protected override CefDisplayHandler GetDisplayHandler()
-        {
-            return displayHandler;
-        }
-
-        protected override CefLoadHandler GetLoadHandler()
-        {
-            return loadHandler;
-        }
+        protected override CefLifeSpanHandler GetLifeSpanHandler() => lifeSpanHandler;
+        protected override CefDisplayHandler GetDisplayHandler() => displayHandler;
+        protected override CefLoadHandler GetLoadHandler() => loadHandler;
+        protected override CefKeyboardHandler GetKeyboardHandler() => keyboardHandler;
 
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
@@ -155,7 +153,7 @@ namespace ServiceStack.CefGlue
             if (message.Name == "myMessage2" || message.Name == "myMessage3") return true;
 
             return false;
-        }
+        }        
     }
 
     public sealed class TitleChangedEventArgs : EventArgs
@@ -261,6 +259,67 @@ namespace ServiceStack.CefGlue
         protected override void OnLoadingStateChange(CefBrowser browser, bool isLoading, bool canGoBack, bool canGoForward)
         {
             core.OnLoadingStateChanged(isLoading, canGoBack, canGoForward);
+        }
+    }
+
+    //https://github.com/adobe/webkit/blob/master/Source/WebCore/platform/chromium/KeyboardCodes.h
+    internal static class KeyCodes
+    {
+        internal const int F5 = 0x74;
+        internal const int F11 = 0x7A;
+        internal const int F12 = 0x7B;
+        internal const int Left = 0x25;
+        internal const int Up = 0x26;
+        internal const int Right = 0x27;
+        internal const int Down = 0x28;
+
+        internal const int R = 0x52;
+    }
+
+    internal sealed class WebKeyboardHandler : CefKeyboardHandler
+    {
+        private WebBrowser core;
+        public WebKeyboardHandler(WebBrowser core) => this.core = core;
+
+        private class DevToolsWebClient : CefClient {}
+
+        protected override bool OnPreKeyEvent(CefBrowser browser, CefKeyEvent keyEvent, IntPtr os_event, out bool isKeyboardShortcut)
+        {
+            core.Log($"Key: {keyEvent.NativeKeyCode}, winKey: {keyEvent.WindowsKeyCode}, modifiers: {keyEvent.Modifiers}, type: {keyEvent.EventType} ");
+
+            if (keyEvent.EventType == CefKeyEventType.RawKeyDown)
+            {
+                if (core.Config.DevTools && (keyEvent.WindowsKeyCode == KeyCodes.F11 || keyEvent.WindowsKeyCode == KeyCodes.F12))
+                {
+                    var host = core.CefBrowser.GetHost();
+                    var windowInfo = CefWindowInfo.Create();
+                    windowInfo.SetAsPopup(IntPtr.Zero, "DevTools");
+                    host.ShowDevTools(windowInfo, new DevToolsWebClient(), new CefBrowserSettings(), new CefPoint());
+                }
+    
+                var altDown = (keyEvent.Modifiers | CefEventFlags.AltDown) == CefEventFlags.AltDown;
+                if (core.Config.EnableNavigationKeys && altDown)
+                {
+                    if (keyEvent.WindowsKeyCode == KeyCodes.Left && browser.CanGoBack)
+                        browser.GoBack();
+                    if (keyEvent.WindowsKeyCode == KeyCodes.Right && browser.CanGoForward)
+                        browser.GoForward();
+                }
+
+                if ((keyEvent.WindowsKeyCode == KeyCodes.F5 ||
+                     keyEvent.WindowsKeyCode == KeyCodes.R && (keyEvent.Modifiers | CefEventFlags.ControlDown) == CefEventFlags.ControlDown) && 
+                     core.Config.EnableReload)
+                {
+                    browser.Reload();
+                }
+            }
+
+            return base.OnPreKeyEvent(browser, keyEvent, os_event, out isKeyboardShortcut);
+        }
+
+        protected override bool OnKeyEvent(CefBrowser browser, CefKeyEvent keyEvent, IntPtr osEvent)
+        {
+            return base.OnKeyEvent(browser, keyEvent, osEvent);
         }
     }
 

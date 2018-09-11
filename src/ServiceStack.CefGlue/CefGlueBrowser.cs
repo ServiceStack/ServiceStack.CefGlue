@@ -6,24 +6,28 @@ namespace ServiceStack.CefGlue
 {
     public class CefGlueBrowser
     {
-        private CefBrowser browser;
         private IntPtr browserWindowHandle;
-        private CefConfig config;
-        private WebBrowser webBrowser;
-        private WebClient client;
+        public WebClient Client { get; }
+        public CefConfig Config { get; }
+        public CefApp App { get; }
+        public WebBrowser WebBrowser { get; }
+        public CefBrowser CefBrowser { get; private set; }
+        public IntPtr ParentHandle { get; }
 
-        public CefGlueBrowser(IntPtr parentHandle, CefConfig config)
+        public CefGlueBrowser(IntPtr parentHandle, CefApp app, CefConfig config)
         {
-            this.config = config;
+            this.ParentHandle = parentHandle;
+            this.App = app;
+            this.Config = config;
 
             var windowInfo = CefWindowInfo.Create();
             windowInfo.SetAsChild(parentHandle, new CefRectangle(0, 0, config.Width, config.Height));
 
-            this.webBrowser = new WebBrowser(this, config.CefBrowserSettings, config.StartUrl);
-            this.webBrowser.Created += WebBrowser_Created;
-            this.client = new WebClient(this.webBrowser);
+            this.WebBrowser = new WebBrowser(this);
+            this.WebBrowser.Created += WebBrowser_Created;
+            this.Client = new WebClient(this.WebBrowser);
 
-            CefBrowserHost.CreateBrowser(windowInfo, client, config.CefBrowserSettings, config.StartUrl);
+            CefBrowserHost.CreateBrowser(windowInfo, Client, config.CefBrowserSettings, config.StartUrl);
         }
 
         public string Title { get; private set; }
@@ -45,11 +49,11 @@ namespace ServiceStack.CefGlue
 
         private void WebBrowser_Created(object sender, EventArgs e)
         {
-            this.browser = this.webBrowser.CefBrowser;
-            this.browserWindowHandle = browser.GetHost().GetWindowHandle();
+            this.CefBrowser = this.WebBrowser.CefBrowser;
+            this.browserWindowHandle = CefBrowser.GetHost().GetWindowHandle();
 
-            var offsetWidth = config.Width - 22; //For some reason it's 22px too long when first started
-            CefPlatform.Instance.ResizeWindow(browserWindowHandle, offsetWidth, config.Height);
+            var offsetWidth = Config.Width - 22; //For some reason it's 22px too long when first started
+            CefPlatform.Instance.ResizeWindow(browserWindowHandle, offsetWidth, Config.Height);
 
             this.BrowserCreated?.Invoke(this, EventArgs.Empty);
         }
@@ -114,19 +118,25 @@ namespace ServiceStack.CefGlue
             CefPlatform.Instance.ResizeWindow(this.browserWindowHandle, width, height);
         }
 
+        public void DisposeCefBrowser()
+        {
+            CefBrowser.Dispose();
+            CefBrowser = null;
+        }
+
         protected void Dispose(bool disposing)
         {
-            if (this.browser != null && disposing)
+            if (this.CefBrowser != null && disposing)
             {
-                var host = this.browser.GetHost();
+                var host = this.CefBrowser.GetHost();
                 if (host != null)
                 {
                     host.CloseBrowser();
                     host.Dispose();
                 }
 
-                this.browser.Dispose();
-                this.browser = null;
+                this.CefBrowser.Dispose();
+                this.CefBrowser = null;
                 this.browserWindowHandle = IntPtr.Zero;
             }
         }

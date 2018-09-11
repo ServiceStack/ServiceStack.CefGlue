@@ -37,7 +37,7 @@ namespace ServiceStack.CefGlue.Win64
 
             CefRuntime.Initialize(mainArgs, context.CefSettings, app, IntPtr.Zero);
 
-            this.browser = new CefGlueBrowser(this.Handle, context);
+            this.browser = new CefGlueBrowser(this.Handle, app, context);
 
             base.OnCreate(ref packet);
         }
@@ -79,7 +79,7 @@ namespace ServiceStack.CefGlue.Win64
             }
 
             protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
-            {
+            {                
             }
 
             protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
