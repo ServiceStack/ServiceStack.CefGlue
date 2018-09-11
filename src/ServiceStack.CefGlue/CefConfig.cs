@@ -23,7 +23,7 @@ namespace ServiceStack.CefGlue
                 Locale = "en-US",
                 LogFile = debug ? "cef.log" : null,
                 MultiThreadedMessageLoop = CefRuntime.Platform == CefRuntimePlatform.Windows,
-                LogSeverity = debug ? CefLogSeverity.Verbose : CefLogSeverity.Info,
+                LogSeverity = CefLogSeverity.Info,
                 ResourcesDirPath = cefPath,
                 BrowserSubprocessPath = processPath,
                 RemoteDebuggingPort = debug ? 20480 : 0,
@@ -69,6 +69,12 @@ namespace ServiceStack.CefGlue
         {
             get => CefSettings.RemoteDebuggingPort != 0;
             set => CefSettings.RemoteDebuggingPort = value ? 20480 : 0;
+        }
+
+        public bool Verbose
+        {
+            get => CefSettings.LogSeverity == CefLogSeverity.Verbose;
+            set => CefSettings.LogSeverity = value ? CefLogSeverity.Verbose : CefLogSeverity.Info;
         }
     }
 }

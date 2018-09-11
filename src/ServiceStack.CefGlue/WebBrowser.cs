@@ -91,7 +91,7 @@ namespace ServiceStack.CefGlue
 
         public void Log(string message)
         {
-            if (!Config.Debug)
+            if (!Config.Verbose)
                 return;
             
             Console.WriteLine(message);
