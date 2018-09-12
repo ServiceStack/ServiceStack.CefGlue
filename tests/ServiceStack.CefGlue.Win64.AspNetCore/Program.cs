@@ -30,6 +30,7 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
             {
                 Args = args,
                 StartUrl = startUrl,
+                HideConsoleWindow = false,
             };
             
             return CefPlatformWindows.Start(config);
