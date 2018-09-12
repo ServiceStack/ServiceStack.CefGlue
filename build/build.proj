@@ -71,7 +71,9 @@
 
     <ItemGroup>
       <CefGlueFiles Include="$(SrcDir)/ServiceStack.CefGlue/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.*"></CefGlueFiles>
-      <CefGlueWin64Files Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/*.*"></CefGlueWin64Files>
+
+      <CefGlueWin64Files Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/*.*" Exclude="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.*"></CefGlueWin64Files>
+      <CefGlueWin64LibFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.Win64.*"></CefGlueWin64LibFiles>
       <CefGlueWin64LocalesFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/locales/*.*"></CefGlueWin64LocalesFiles>
       <CefGlueWin64SwiftShaderFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/swiftshader/*.*"></CefGlueWin64SwiftShaderFiles>
     </ItemGroup>
@@ -89,6 +91,9 @@
             LogStandardErrorAsError="true" />
 
     <!-- ServiceStack.CefGlue.Win64 -->
+    <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0')" />
+    <Copy SourceFiles="%(CefGlueWin64LibFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" />
+
     <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0')" />
     <Copy SourceFiles="%(CefGlueWin64Files.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0" />
     <Copy SourceFiles="%(CefGlueWin64LocalesFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0/locales" />
