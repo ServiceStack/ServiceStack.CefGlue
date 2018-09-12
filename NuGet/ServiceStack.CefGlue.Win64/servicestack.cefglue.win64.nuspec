@@ -33,7 +33,7 @@
       </group>
     </dependencies>
     <contentFiles>
-      <files include="contentFiles\**\*.*" buildAction="None" copyToOutput="true" flatten="false" />
+      <files include="contentFiles\**\*" buildAction="None" copyToOutput="true" flatten="false" />
     </contentFiles>
   </metadata>
   <files>
