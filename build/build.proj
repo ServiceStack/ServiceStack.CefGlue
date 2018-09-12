@@ -89,10 +89,10 @@
             LogStandardErrorAsError="true" />
 
     <!-- ServiceStack.CefGlue.Win64 -->
-    <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0')" />
-    <Copy SourceFiles="%(CefGlueWin64Files.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" />
-    <Copy SourceFiles="%(CefGlueWin64LocalesFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0/locales" />
-    <Copy SourceFiles="%(CefGlueWin64SwiftShaderFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0/swiftshader" />
+    <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0')" />
+    <Copy SourceFiles="%(CefGlueWin64Files.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0" />
+    <Copy SourceFiles="%(CefGlueWin64LocalesFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0/locales" />
+    <Copy SourceFiles="%(CefGlueWin64SwiftShaderFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/tools/netstandard2.0/swiftshader" />
 
     <Exec Command="&quot;$(NuGetPath)&quot; pack &quot;$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/ServiceStack.CefGlue.Win64.nuspec&quot; -OutputDirectory &quot;$(NuGetPackageDir)&quot; -Version $(PackageVersion) -Symbols"
           LogStandardErrorAsError="true" />
