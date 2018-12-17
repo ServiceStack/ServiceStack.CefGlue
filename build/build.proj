@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Default"
-    xmlns='http://schemas.microsoft.com/developer/msbuild/2003' ToolsVersion="4.0">
+         xmlns='http://schemas.microsoft.com/developer/msbuild/2003' ToolsVersion="4.0">
   <Import Project="$(MSBuildProjectDirectory)/build.tasks" />
 
   <PropertyGroup>
@@ -13,16 +13,9 @@
     <BuildSolutionDir>$(MSBuildProjectDirectory)/..</BuildSolutionDir>
     <SrcDir>$(BuildSolutionDir)/src</SrcDir>
     <Configuration Condition="$(Configuration) == ''">Release</Configuration>
-    <NuGetPath>$(BuildSolutionDir)/src/.nuget/nuget.exe</NuGetPath>
     <NuGetPackageDir>$(BuildSolutionDir)/NuGet/</NuGetPackageDir>
-    <Version>$(MajorVersion).$(MinorVersion).$(PatchVersion).0</Version>
     <PackageVersion>$(MajorVersion).$(MinorVersion).$(PatchVersion)</PackageVersion>
-    <EnvVersion>$(MajorVersion).$(MinorVersion)$(PatchVersion)</EnvVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <NugetPackageFilesToDelete Include="$(NuGetPackageDir)/*.nupkg"/>
-  </ItemGroup>
 
   <PropertyGroup>
     <DoBuildSolutionsDependsOn>
@@ -31,76 +24,56 @@
     </DoBuildSolutionsDependsOn>
   </PropertyGroup>
 
-  <Target Name="Default" DependsOnTargets="$(DoBuildSolutionsDependsOn)" />
-
-  <Target Name="TeamCityBuild">
-    <CallTarget Targets="UpdateVersion" />
-    <CallTarget Targets="Default" />
-  </Target>
-
   <Target Name="BeforeBuildSolutions">
     <Message Text="*****Before building solution*****" Importance="high"/>
     <CallTarget Targets="UpdateVersion" />
   </Target>
 
   <Target Name="BuildSolutions">
-    <MSBuild Projects="$(BuildSolutionDir)/src/ServiceStack.CefGlue.sln" Targets="Build"
-      Properties="Configuration=$(Configuration)" />
+    <ItemGroup>
+      <NugetPackageFilesToDelete Include="$(NuGetPackageDir)/*.nupkg"/>
+    </ItemGroup>
+    <Delete Files="@(NugetPackageFilesToDelete)" />
+  </Target>
+
+  <Target Name="ClearNuGetRestoreCaches">
   </Target>
 
   <Target Name="UpdateVersion">
     <!-- Update Version -->
     <ItemGroup>
-      <RegexTransform Include="$(SrcDir)/**/AssemblyInfo.cs">
-        <Find>AssemblyFileVersion\(\"5\.\d+\.\d+\.\d+\"\)</Find>
-        <ReplaceWith>AssemblyFileVersion("$(Version)")</ReplaceWith>
-      </RegexTransform>
-
-      <!--Update Min Dependency Version -->
-      <RegexTransform Include="$(NuGetPackageDir)/**/*.nuspec">
-        <Find>version="5\.[^"]*"</Find>
-        <ReplaceWith>version="$(PackageVersion)"</ReplaceWith>
+      <RegexTransform Include="$(BuildSolutionDir)/src/Directory.Build.props;$(BuildSolutionDir)/tests/Directory.Build.props">
+        <Find>&lt;Version&gt;[^&lt;]*</Find>
+        <ReplaceWith>&lt;Version&gt;$(PackageVersion)</ReplaceWith>
       </RegexTransform>
     </ItemGroup>
 
     <RegexTransform Items="@(RegexTransform)" />
   </Target>
 
-  <Target Name="NuGetPack">
-    <Delete Files="@(NugetPackageFilesToDelete)" />
+  <Target Name="Default" DependsOnTargets="$(DoBuildSolutionsDependsOn)">
 
-    <ItemGroup>
-      <CefGlueFiles Include="$(SrcDir)/ServiceStack.CefGlue/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.*"></CefGlueFiles>
-
-      <CefGlueWin64Files Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/*.*" Exclude="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.*"></CefGlueWin64Files>
-      <CefGlueWin64LibFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/ServiceStack.CefGlue.Win64.*"></CefGlueWin64LibFiles>
-      <CefGlueWin64LocalesFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/locales/*.*"></CefGlueWin64LocalesFiles>
-      <CefGlueWin64SwiftShaderFiles Include="$(SrcDir)/ServiceStack.CefGlue.Win64/bin/$(Configuration)/netstandard2.0/swiftshader/*.*"></CefGlueWin64SwiftShaderFiles>
-    </ItemGroup>
-
-    <RemoveDir Directories="$(SrcDir)/ServiceStack.CefGlue/obj" />
+    <!-- ServiceStack.CefGlue -->
+    <MSBuild Projects="$(BuildSolutionDir)/src/ServiceStack.CefGlue/ServiceStack.CefGlue.csproj" Targets="Restore" />
     <MSBuild Projects="$(BuildSolutionDir)/src/ServiceStack.CefGlue/ServiceStack.CefGlue.csproj"
-             Targets="Restore;Build"
-             Properties="Version=$(PackageVersion);Configuration=$(Configuration)" />
-
-    <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue/lib/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue/lib/netstandard2.0')" />
-    <Copy SourceFiles="%(CefGlueFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue/lib/netstandard2.0" />
-
-    <!-- Pack ServiceStack.CefGlue -->
-    <Exec Command="&quot;$(NuGetPath)&quot; pack &quot;$(NuGetPackageDir)/ServiceStack.CefGlue/ServiceStack.CefGlue.nuspec&quot; -OutputDirectory &quot;$(NuGetPackageDir)&quot; -Version $(PackageVersion) -Symbols"
-            LogStandardErrorAsError="true" />
+             Targets="Build;Pack"
+             Properties="Configuration=$(Configuration)" />
 
     <!-- ServiceStack.CefGlue.Win64 -->
-    <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0')" />
-    <Copy SourceFiles="%(CefGlueWin64LibFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/lib/netstandard2.0" />
+    <MSBuild Projects="$(BuildSolutionDir)/src/ServiceStack.CefGlue.Win64/ServiceStack.CefGlue.Win64.csproj" Targets="Restore" />
+    <MSBuild Projects="$(BuildSolutionDir)/src/ServiceStack.CefGlue.Win64/ServiceStack.CefGlue.Win64.csproj"
+             Targets="Build;Pack"
+             Properties="Configuration=$(Configuration)" />
 
-    <MakeDir Directories="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/contentFiles/any/any" Condition="!Exists('$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/contentFiles/any/any')" />
-    <Copy SourceFiles="%(CefGlueWin64Files.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/contentFiles/any/any" />
-    <Copy SourceFiles="%(CefGlueWin64LocalesFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/contentFiles/any/any/locales" />
-    <Copy SourceFiles="%(CefGlueWin64SwiftShaderFiles.Identity)" DestinationFolder="$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/contentFiles/any/any/swiftshader" />
 
-    <Exec Command="&quot;$(NuGetPath)&quot; pack &quot;$(NuGetPackageDir)/ServiceStack.CefGlue.Win64/ServiceStack.CefGlue.Win64.nuspec&quot; -OutputDirectory &quot;$(NuGetPackageDir)&quot; -Version $(PackageVersion) -Symbols"
-          LogStandardErrorAsError="true" />
+    <!-- Copy all *.nupkg to /NuGet -->
+    <ItemGroup>
+      <NugetPackagesToMove Include="$(BuildSolutionDir)/src/**/bin/$(Configuration)/*.nupkg"/>
+    </ItemGroup>
+    <Move SourceFiles="@(NugetPackagesToMove)" DestinationFolder="$(NuGetPackageDir)" />
+
+    <!-- leave .sln in optimal state then NuGet restore .sln to build -->
+    <CallTarget Targets="ClearNuGetRestoreCaches" />
 
   </Target>
 </Project>

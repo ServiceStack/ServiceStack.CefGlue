@@ -15,8 +15,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8315A478
 		..\build\build.proj = ..\build\build.proj
 		..\build\build.tasks = ..\build\build.tasks
 		..\build\prepare.bat = ..\build\prepare.bat
-		..\NuGet\ServiceStack.CefGlue\servicestack.cefglue.nuspec = ..\NuGet\ServiceStack.CefGlue\servicestack.cefglue.nuspec
-		..\NuGet\ServiceStack.CefGlue.Win64\servicestack.cefglue.win64.nuspec = ..\NuGet\ServiceStack.CefGlue.Win64\servicestack.cefglue.win64.nuspec
 		..\build\copy-cef.bat = ..\build\copy-cef.bat
 		..\build\copy-xilian.bat = ..\build\copy-xilian.bat
 	EndProjectSection

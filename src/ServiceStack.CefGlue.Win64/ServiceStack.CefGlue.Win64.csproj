@@ -9,17 +9,14 @@
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
     <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
     <ContentTargetFolders>contentFiles</ContentTargetFolders>
-    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
-    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
-    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
-    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
-    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
-    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
-    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
-    <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
-    <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <LangVersion>7.2</LangVersion>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Title>ServiceStack.CefGlue.Win64</Title>
+    <PackageDescription>
+      Create self-contained .NET Core Windows (x64) Chromium Embedded Desktop Apps.
+      Easily view and deploy any ServiceStack .NET Core Web App in a self-contained 
+      Chrome CEF Browser (Win64)
+    </PackageDescription>
+    <PackageTags>CEF;ServiceStack;.NET;Core;Desktop;Chromium;WebApps;CefGlue</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
