@@ -1,8 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <!-- dotnet publish -c release -r win-x64 -->
-    <Version>0.0.1</Version>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>ServiceStack.CefGlue.Win64</AssemblyName>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
