@@ -47,7 +47,7 @@
         /// Set to <c>true</c> to have the browser process message loop run in a separate
         /// thread. If <c>false</c> than the CefDoMessageLoopWork() function must be
         /// called from your application message loop. This option is only supported on
-        /// Windows.
+        /// Windows and Linux.
         /// </summary>
         public bool MultiThreadedMessageLoop { get; set; }
 
@@ -156,9 +156,10 @@
 
         /// <summary>
         /// The log severity. Only messages of this severity level or higher will be
-        /// logged. Also configurable using the "log-severity" command-line switch with
-        /// a value of "verbose", "info", "warning", "error", "error-report" or
-        /// "disable".
+        /// logged. When set to DISABLE no messages will be written to the log file,
+        /// but FATAL messages will still be output to stderr. Also configurable using
+        /// the "log-severity" command-line switch with a value of "verbose", "info",
+        /// "warning", "error", "fatal" or "disable".
         /// </summary>
         public CefLogSeverity LogSeverity { get; set; }
 

@@ -33,7 +33,7 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
 
         public override void Configure(Container container)
         {
-            Plugins.Add(new TemplatePagesFeature());
+            Plugins.Add(new SharpPagesFeature());
         }
     }
 
