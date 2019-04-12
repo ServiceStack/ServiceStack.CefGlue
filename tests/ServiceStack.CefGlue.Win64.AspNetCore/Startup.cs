@@ -8,12 +8,6 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
 {
     public class Startup
     {
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseServiceStack(new AppHost());
@@ -28,8 +22,7 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
 
     public class AppHost : AppHostBase
     {
-        public AppHost()
-            : base("MyApp", typeof(MyServices).Assembly) { }
+        public AppHost() : base("MyApp", typeof(MyServices).Assembly) { }
 
         public override void Configure(Container container)
         {
@@ -46,7 +39,6 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
     }
 
     [Route("/hello")]
-    [Route("/hello/{Name}")]
     public class Hello : IReturn<HelloResponse>
     {
         public string Name { get; set; }
@@ -59,10 +51,7 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
 
     public class MyServices : Service
     {
-        public object Any(Hello request)
-        {
-            return new HelloResponse { Result = $"Hello, {request.Name}!" };
-        }
+        public object Any(Hello request) => new HelloResponse { Result = $"Hello, {request.Name}!" };
     }
 
 }
