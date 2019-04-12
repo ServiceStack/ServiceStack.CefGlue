@@ -29,7 +29,7 @@ namespace ServiceStack.CefGlue.Win64
 
             var mainArgs = new CefMainArgs(argv);
 
-            var app = new WebCefApp(context.Args);
+            var app = new WebCefApp(context);
 
             var exitCode = CefRuntime.ExecuteProcess(mainArgs, app, IntPtr.Zero);
             if (exitCode != -1)
@@ -71,20 +71,24 @@ namespace ServiceStack.CefGlue.Win64
 
         internal sealed class WebCefApp : CefApp
         {
+            private CefConfig context;
             private string[] args;
 
-            public WebCefApp(string[] args)
+            public WebCefApp(CefConfig context)
             {
-                this.args = args;
+                this.context = context;
+                this.args = context.Args;
             }
 
             protected override void OnRegisterCustomSchemes(CefSchemeRegistrar registrar)
             {                
+                context.OnRegisterCustomSchemes?.Invoke(registrar);
             }
 
             protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
             {
-            }
+                context.OnBeforeCommandLineProcessing?.Invoke(processType, commandLine);
+            }            
         }
     }
 }

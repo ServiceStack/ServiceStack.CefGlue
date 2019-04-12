@@ -34,6 +34,14 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
         public override void Configure(Container container)
         {
             Plugins.Add(new SharpPagesFeature());
+
+            Plugins.Add(new ProxyFeature(
+                matchingRequests: req => req.PathInfo.StartsWith("/theverge"),
+                resolveUrl: req => $"https://www.theverge.com" + req.RawUrl.Replace("/theverge", "/")) {
+                IgnoreResponseHeaders = {
+                    "X-Frame-Options"
+                }
+            });
         }
     }
 

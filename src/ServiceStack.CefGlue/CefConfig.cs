@@ -76,5 +76,36 @@ namespace ServiceStack.CefGlue
             get => CefSettings.LogSeverity == CefLogSeverity.Verbose;
             set => CefSettings.LogSeverity = value ? CefLogSeverity.Verbose : CefLogSeverity.Info;
         }
+        
+        //WebBrowser
+        public Action<WebBrowser> OnCreated { get; set; }
+        public Action<WebBrowser,string> OnTitleChanged { get; set; }
+        public Action<WebBrowser,string> OnAddressChanged { get; set; }
+        public Action<WebBrowser,string> OnTargetUrlChanged { get; set; }
+        public Action<WebBrowser,LoadingStateChangedEventArgs> OnLoadingStateChanged { get; set; }
+        public Action<WebBrowser,string> OnLog { get; set; }
+        public Func<WebClient,CefBrowser,CefProcessId,CefProcessMessage,bool?> OnProcessMessageReceived { get; set; }
+        
+        //WebLifeSpanHandler
+        public Action<CefBrowser> OnLifeSpanAfterCreated { get; set; }
+        public Action<CefBrowser> OnLifeSpanBeforeClose { get; set; }
+        public Action<CefBrowser> OnLifeSpanDoClose { get; set; }
+        
+        //WebDisplayHandler
+        public Action<CefBrowser,string> OnDisplayTitleChange { get; set; }
+        public Action<CefBrowser,CefFrame,string> OnDisplayAddressChange { get; set; }
+        public Action<CefBrowser,string> OnDisplayStatusMessage { get; set; }
+        public Func<CefBrowser,string,bool?> OnDisplayTooltip { get; set; }
+        
+        //WebKeyboardHandler
+        public Func<CefBrowser,CefKeyEvent,IntPtr,bool?> OnKeyboardPreKeyEvent { get; set; }
+        public Func<CefBrowser,CefKeyEvent,IntPtr,bool?> OnKeyEvent { get; set; }
+
+
+        //CefApp
+        public Action<CefSchemeRegistrar> OnRegisterCustomSchemes { get; set; }
+        public Action<string, CefCommandLine> OnBeforeCommandLineProcessing { get; set; }
+        
+        
     }
 }

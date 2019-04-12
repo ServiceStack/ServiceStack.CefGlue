@@ -15,7 +15,7 @@ namespace ServiceStack.CefGlue
         public CefBrowser CefBrowser { get; private set; }
 
         public CefGlueBrowser Host { get; }
-        public CefConfig Config => Host.Config;
+        public CefConfig Config => Host?.Config;
         public CefApp App => Host.App;
 
         public WebBrowser(CefGlueBrowser host)
@@ -44,6 +44,8 @@ namespace ServiceStack.CefGlue
             
             var handler = Created;
             handler?.Invoke(this, EventArgs.Empty);
+            
+            Config?.OnCreated?.Invoke(this);
         }
 
         public void Close()
@@ -63,6 +65,8 @@ namespace ServiceStack.CefGlue
         {
             var handler = TitleChanged;
             handler?.Invoke(this, new TitleChangedEventArgs(title));
+
+            Config?.OnTitleChanged?.Invoke(this, title);
         }
 
         public event EventHandler<AddressChangedEventArgs> AddressChanged;
@@ -71,6 +75,8 @@ namespace ServiceStack.CefGlue
         {
             var handler = AddressChanged;
             handler?.Invoke(this, new AddressChangedEventArgs(address));
+
+            Config?.OnAddressChanged?.Invoke(this, address);
         }
 
         public event EventHandler<TargetUrlChangedEventArgs> TargetUrlChanged;
@@ -79,6 +85,8 @@ namespace ServiceStack.CefGlue
         {
             var handler = TargetUrlChanged;
             handler?.Invoke(this, new TargetUrlChangedEventArgs(targetUrl));
+
+            Config?.OnTargetUrlChanged?.Invoke(this, targetUrl);
         }
 
         public event EventHandler<LoadingStateChangedEventArgs> LoadingStateChanged;
@@ -86,7 +94,10 @@ namespace ServiceStack.CefGlue
         internal void OnLoadingStateChanged(bool isLoading, bool canGoBack, bool canGoForward)
         {
             var handler = LoadingStateChanged;
-            handler?.Invoke(this, new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward));
+            var args = new LoadingStateChangedEventArgs(isLoading, canGoBack, canGoForward);
+            handler?.Invoke(this, args);
+
+            Config?.OnLoadingStateChanged?.Invoke(this, args);
         }
 
         public void Log(string message)
@@ -95,6 +106,8 @@ namespace ServiceStack.CefGlue
                 return;
             
             Console.WriteLine(message);
+
+            Config?.OnLog?.Invoke(this, message);
         }
     }
 
@@ -124,6 +137,10 @@ namespace ServiceStack.CefGlue
 
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
         {
+            var result = core.Config.OnProcessMessageReceived?.Invoke(this, browser, sourceProcess, message);
+            if (result != null)
+                return result.Value;
+            
             if (DumpProcessMessages)
             {
                 Console.WriteLine("Client::OnProcessMessageReceived: SourceProcess={0}", sourceProcess);
@@ -201,16 +218,21 @@ namespace ServiceStack.CefGlue
             base.OnAfterCreated(browser);
 
             core.OnCreated(browser);
+            
+            core.Config.OnLifeSpanAfterCreated?.Invoke(browser);
         }
 
         protected override bool DoClose(CefBrowser browser)
         {
+            core.Config.OnLifeSpanDoClose?.Invoke(browser);
+
             // TODO: dispose core
             return false;
         }
 
         protected override void OnBeforeClose(CefBrowser browser)
         {
+            core.Config.OnLifeSpanBeforeClose?.Invoke(browser);
         }
     }
 
@@ -226,6 +248,8 @@ namespace ServiceStack.CefGlue
         protected override void OnTitleChange(CefBrowser browser, string title)
         {
             core.OnTitleChanged(title);
+            
+            core.Config.OnDisplayTitleChange?.Invoke(browser, title);
         }
 
         protected override void OnAddressChange(CefBrowser browser, CefFrame frame, string url)
@@ -234,15 +258,23 @@ namespace ServiceStack.CefGlue
             {
                 core.OnAddressChanged(url);
             }
+            
+            core.Config.OnDisplayAddressChange?.Invoke(browser,frame,url);
         }
 
         protected override void OnStatusMessage(CefBrowser browser, string value)
         {
             core.OnTargetUrlChanged(value);
+
+            core.Config.OnDisplayStatusMessage?.Invoke(browser,value);
         }
 
         protected override bool OnTooltip(CefBrowser browser, string text)
         {
+            var ret = core.Config.OnDisplayTooltip?.Invoke(browser,text);
+            if (ret != null)
+                return ret.Value;
+
             return false;
         }
     }
@@ -285,6 +317,13 @@ namespace ServiceStack.CefGlue
 
         protected override bool OnPreKeyEvent(CefBrowser browser, CefKeyEvent keyEvent, IntPtr os_event, out bool isKeyboardShortcut)
         {
+            var ret = core.Config.OnKeyboardPreKeyEvent?.Invoke(browser, keyEvent, os_event);
+            if (ret != null)
+            {
+                isKeyboardShortcut = false;
+                return ret.Value;
+            }
+            
             core.Log($"Key: {keyEvent.NativeKeyCode}, winKey: {keyEvent.WindowsKeyCode}, modifiers: {keyEvent.Modifiers}, type: {keyEvent.EventType} ");
 
             if (keyEvent.EventType == CefKeyEventType.RawKeyDown)
