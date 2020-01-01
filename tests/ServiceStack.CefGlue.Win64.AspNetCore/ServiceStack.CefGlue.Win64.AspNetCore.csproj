@@ -3,14 +3,14 @@
   <!-- dotnet publish -c release -r win-x64 -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <Platforms>x64</Platforms>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
     <AssemblyName>webapp</AssemblyName>
     <TrimUnusedDependencies>true</TrimUnusedDependencies>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>
+<!--    <RuntimeFrameworkVersion>2.1.2</RuntimeFrameworkVersion>-->
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
