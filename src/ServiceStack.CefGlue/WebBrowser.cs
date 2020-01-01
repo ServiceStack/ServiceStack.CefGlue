@@ -135,7 +135,7 @@ namespace ServiceStack.CefGlue
         protected override CefLoadHandler GetLoadHandler() => loadHandler;
         protected override CefKeyboardHandler GetKeyboardHandler() => keyboardHandler;
 
-        protected override bool OnProcessMessageReceived(CefBrowser browser, CefProcessId sourceProcess, CefProcessMessage message)
+        protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
             var result = core.Config.OnProcessMessageReceived?.Invoke(this, browser, sourceProcess, message);
             if (result != null)
