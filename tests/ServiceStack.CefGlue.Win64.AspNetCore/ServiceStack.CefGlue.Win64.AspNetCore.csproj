@@ -15,11 +15,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<ProjectReference Include="..\..\src\ServiceStack.CefGlue\ServiceStack.CefGlue.csproj" />-->
-    <!--<ProjectReference Include="..\..\src\ServiceStack.CefGlue.Win64\ServiceStack.CefGlue.Win64.csproj" />-->
+    <ProjectReference Include="..\..\src\ServiceStack.CefGlue\ServiceStack.CefGlue.csproj" />
+    <ProjectReference Include="..\..\src\ServiceStack.CefGlue.Win64\ServiceStack.CefGlue.Win64.csproj" />
 
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.*" />
-    <PackageReference Include="ServiceStack.CefGlue.Win64" Version="5.*" />
+<!--    <PackageReference Include="ServiceStack.CefGlue.Win64" Version="5.*" />-->
     <PackageReference Include="WinApi" Version="4.0.0" />
     <PackageReference Include="ServiceStack" Version="5.*" />
   </ItemGroup>

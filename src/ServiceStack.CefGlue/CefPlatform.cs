@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using Xilium.CefGlue;
 
 namespace ServiceStack.CefGlue
@@ -12,5 +13,9 @@ namespace ServiceStack.CefGlue
         public abstract void HideConsoleWindow();
 
         public abstract void ResizeWindow(IntPtr handle, int width, int height);
+
+        public abstract Rectangle GetClientRectangle(IntPtr handle);
+
+        public abstract void SetWinFullScreen(IntPtr handle);
     }
 }

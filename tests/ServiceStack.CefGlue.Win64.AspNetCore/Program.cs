@@ -31,6 +31,8 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
                 Args = args,
                 StartUrl = startUrl,
                 HideConsoleWindow = false,
+                Kiosk = true,
+                // FullScreen = true,
             };
             
             return CefPlatformWindows.Start(config);

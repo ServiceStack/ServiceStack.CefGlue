@@ -277,6 +277,11 @@ namespace ServiceStack.CefGlue
 
             return false;
         }
+
+        protected override void OnFullscreenModeChange(CefBrowser browser, bool fullscreen)
+        {
+            core.Config.OnFullscreenModeChange?.Invoke(browser, fullscreen);
+        }
     }
 
     internal sealed class WebLoadHandler : CefLoadHandler

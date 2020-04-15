@@ -62,7 +62,9 @@ namespace ServiceStack.CefGlue
         public bool CenterToScreen { get; set; }
         public bool HideConsoleWindow { get; set; }
         public bool EnableNavigationKeys { get; set; } // ALT+Left + ALT+Right
-        public bool EnableReload { get; set; }     // F5 to refresh
+        public bool EnableReload { get; set; }     // F5 to 
+        public bool FullScreen { get; set; }
+        public bool Kiosk { get; set; }
         public bool Debug { get; set; }
 
         public bool DevTools
@@ -96,6 +98,7 @@ namespace ServiceStack.CefGlue
         public Action<CefBrowser,CefFrame,string> OnDisplayAddressChange { get; set; }
         public Action<CefBrowser,string> OnDisplayStatusMessage { get; set; }
         public Func<CefBrowser,string,bool?> OnDisplayTooltip { get; set; }
+        public Action<CefBrowser,bool> OnFullscreenModeChange { get; set; }
         
         //WebKeyboardHandler
         public Func<CefBrowser,CefKeyEvent,IntPtr,bool?> OnKeyboardPreKeyEvent { get; set; }
