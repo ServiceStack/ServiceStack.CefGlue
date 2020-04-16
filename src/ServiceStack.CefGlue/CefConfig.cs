@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Xilium.CefGlue;
@@ -66,6 +67,7 @@ namespace ServiceStack.CefGlue
         public bool FullScreen { get; set; }
         public bool Kiosk { get; set; }
         public bool Debug { get; set; }
+        public Dictionary<string,string> Meta { get; set; }
 
         public bool DevTools
         {
