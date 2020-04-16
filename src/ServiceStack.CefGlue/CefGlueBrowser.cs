@@ -13,6 +13,7 @@ namespace ServiceStack.CefGlue
         public WebBrowser WebBrowser { get; }
         public CefBrowser CefBrowser { get; private set; }
         public IntPtr ParentHandle { get; }
+        public IntPtr BrowserWindowHandle => browserWindowHandle;
 
         public CefGlueBrowser(IntPtr parentHandle, CefApp app, CefConfig config)
         {

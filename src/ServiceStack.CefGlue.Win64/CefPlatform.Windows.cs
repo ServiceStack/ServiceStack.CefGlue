@@ -128,6 +128,14 @@ namespace ServiceStack.CefGlue
             }
         }
 
+        public override void ShowScrollBar(IntPtr handle, bool show)
+        {
+            if (handle != IntPtr.Zero)
+            {
+                ShowScrollBar(handle, SB_BOTH, show);
+            }
+        }
+
         [DllImport("user32.dll")]
         static extern int GetSystemMetrics(SystemMetric smIndex);
 
@@ -161,7 +169,16 @@ namespace ServiceStack.CefGlue
         
         [DllImport("user32.dll")]
         static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
-        
+                
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool ShowScrollBar(IntPtr hWnd, int wBar, [MarshalAs(UnmanagedType.Bool)] bool bShow);
+
+        public const int SB_HORZ = 0;
+        public const int SB_VERT = 1;
+        public const int SB_CTL = 2;
+        public const int SB_BOTH = 3;
+
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
