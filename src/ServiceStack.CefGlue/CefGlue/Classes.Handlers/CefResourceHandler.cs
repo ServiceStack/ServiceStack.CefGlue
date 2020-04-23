@@ -53,8 +53,7 @@
             var m_request = CefRequest.FromNative(request);
             var m_callback = CefCallback.FromNative(callback);
 
-            bool m_handleRequest;
-            var m_result = Open(m_request, out m_handleRequest, m_callback);
+            var m_result = Open(m_request, out var m_handleRequest, m_callback);
 
             *handle_request = m_handleRequest ? 1 : 0;
 
@@ -146,8 +145,7 @@
 
             var m_callback = CefResourceSkipCallback.FromNative(callback);
 
-            long m_bytesSkipped;
-            var m_result = Skip(bytes_to_skip, out m_bytesSkipped, m_callback);
+            var m_result = Skip(bytes_to_skip, out var m_bytesSkipped, m_callback);
 
             *bytes_skipped = m_bytesSkipped;
 
@@ -172,8 +170,7 @@
 
             var m_callback = CefResourceReadCallback.FromNative(callback);
 
-            int m_bytesRead;
-            var m_result = Read((IntPtr)data_out, bytes_to_read, out m_bytesRead, m_callback);
+            var m_result = Read((IntPtr)data_out, bytes_to_read, out var m_bytesRead, m_callback);
 
             *bytes_read = m_bytesRead;
 

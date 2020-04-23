@@ -333,10 +333,7 @@ namespace Xilium.CefGlue
         /// </summary>
         PROXY_AUTH_REQUESTED = -127,
 
-        /// <summary>
-        /// The SSL server attempted to use a weak ephemeral Diffie-Hellman key.
-        /// </summary>
-        SSL_WEAK_SERVER_EPHEMERAL_DH_KEY = -129,
+        // Error -129 was removed (SSL_WEAK_SERVER_EPHEMERAL_DH_KEY).
 
         /// <summary>
         /// Could not create a connection to the proxy server. An error occurred
@@ -758,12 +755,19 @@ namespace Xilium.CefGlue
         /// </summary>
         CERT_SYMANTEC_LEGACY = -215,
 
+        // -216 was QUIC_CERT_ROOT_NOT_KNOWN which has been renumbered to not be in the
+        // certificate error range.
+
         /// <summary>
-        /// The certificate presented on a QUIC connection does not chain to a known root
-        /// and the origin connected to is not on a list of domains where unknown roots
-        /// are allowed.
+        /// The certificate is known to be used for interception by an entity other
+        /// the device owner.
         /// </summary>
-        QUIC_CERT_ROOT_NOT_KNOWN = -216,
+        CERT_KNOWN_INTERCEPTION_BLOCKED = -217,
+
+        /// <summary>
+        /// The connection uses an obsolete version of SSL/TLS.
+        /// </summary>
+        SSL_OBSOLETE_VERSION = -218,
 
         // Add new certificate error codes here.
         //
@@ -771,7 +775,7 @@ namespace Xilium.CefGlue
         // code.
 
         // The value immediately past the last certificate error code.
-        //CERT_END = -217,
+        //CERT_END = -219,
 
         /// <summary>
         /// The URL is invalid.
@@ -1128,6 +1132,13 @@ namespace Xilium.CefGlue
         HTTP_RESPONSE_CODE_FAILURE = -379,
 
         /// <summary>
+        /// The certificate presented on a QUIC connection does not chain to a known root
+        /// and the origin connected to is not on a list of domains where unknown roots
+        /// are allowed.
+        /// </summary>
+        QUIC_CERT_ROOT_NOT_KNOWN = -380,
+
+        /// <summary>
         /// The cache does not have the requested entry.
         /// </summary>
         CACHE_MISS = -400,
@@ -1230,9 +1241,9 @@ namespace Xilium.CefGlue
         INVALID_SIGNED_EXCHANGE = -504,
 
         /// <summary>
-        /// An error occurred while handling a bundled-exchanges source.
+        /// An error occurred while handling a Web Bundle source.
         /// </summary>
-        INVALID_BUNDLED_EXCHANGES = -505,
+        INVALID_WEB_BUNDLE = -505,
 
         // *** Code -600 is reserved (was FTP_PASV_COMMAND_FAILED). ***
 
@@ -1400,11 +1411,12 @@ namespace Xilium.CefGlue
         /// </summary>
         DNS_SORT_ERROR = -806,
 
-        /// <summary>
-        /// Failed to resolve over HTTP, fallback to legacy
-        /// </summary>
-        DNS_HTTP_FAILED = -807,
+        // Error -807 was removed (DNS_HTTP_FAILED)
 
+        /// <summary>
+        /// Failed to resolve the hostname of a DNS-over-HTTPS server.
+        /// </summary>
+        DNS_SECURE_RESOLVER_HOSTNAME_RESOLUTION_FAILED = -808,
 
         // CefGlue backward compatiblity.
         // Generally we prefer .NET naming rules, but will care about later.

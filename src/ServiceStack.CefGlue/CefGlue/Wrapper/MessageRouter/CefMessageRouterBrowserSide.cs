@@ -522,7 +522,7 @@
             args.SetInt(1, requestId);
             args.SetBool(2, true);  // Indicates a success result.
             args.SetString(3, response);
-            browser.GetMainFrame().SendProcessMessage(CefProcessId.Renderer, message);
+            browser.SendProcessMessage(CefProcessId.Renderer, message);
             args.Dispose();
             message.Dispose();
         }
@@ -541,7 +541,7 @@
             args.SetBool(2, false);  // Indicates a failure result.
             args.SetInt(3, errorCode);
             args.SetString(4, errorMessage);
-            browser.GetMainFrame().SendProcessMessage(CefProcessId.Renderer, message);
+            browser.SendProcessMessage(CefProcessId.Renderer, message);
             args.Dispose();
             message.Dispose();
         }

@@ -387,7 +387,7 @@
             args.SetString(4, request);
             args.SetBool(5, persistent);
 
-            browser.GetMainFrame().SendProcessMessage(CefProcessId.Browser, message);
+            browser.SendProcessMessage(CefProcessId.Browser, message);
 
             args.Dispose();
             message.Dispose();
@@ -442,7 +442,7 @@
                 args.SetInt(0, contextId);
                 args.SetInt(1, requestId);
 
-                browser.GetMainFrame().SendProcessMessage(CefProcessId.Browser, message);
+                browser.SendProcessMessage(CefProcessId.Browser, message);
                 return true;
             }
 
