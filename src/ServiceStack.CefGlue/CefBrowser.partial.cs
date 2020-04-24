@@ -4,8 +4,7 @@ namespace Xilium.CefGlue
     {
         public void SendProcessMessage(CefProcessId targetProcess, CefProcessMessage message)
         {
-            this.GetFocusedFrame().SendProcessMessage(targetProcess, message);
+            this.GetMainFrame().SendProcessMessage(targetProcess, message);
         }
-        
     }
 }

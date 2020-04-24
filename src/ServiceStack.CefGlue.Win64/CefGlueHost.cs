@@ -48,6 +48,7 @@ namespace ServiceStack.CefGlue.Win64
             var size = packet.Size;
             this.browser.ResizeWindow(size.Width, size.Height);
         }
+        
         protected override void OnDestroy(ref Packet packet)
         {
             this.browser.Dispose();
