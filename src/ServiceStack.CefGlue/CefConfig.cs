@@ -132,10 +132,16 @@ namespace ServiceStack.CefGlue
 
     public class SchemeFactory
     {
+        public SchemeFactory() { }
+        public SchemeFactory(string domain, CefSchemeHandlerFactory factory)
+        {
+            Domain = domain;
+            Factory = factory;
+        }
         public string Scheme { get; set; } = "https";
         public string Domain { get; set; }
         public CefSchemeHandlerFactory Factory { get; set; }
-        public bool AddCrossOriginWhitelistEntry { get; set; }
+        public bool AddCrossOriginWhitelistEntry { get; set; } = true;
         public CefSchemeOptions? SchemeOptions { get; set; }
     }
 }
