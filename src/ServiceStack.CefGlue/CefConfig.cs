@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Reflection;
 using Xilium.CefGlue;
@@ -55,6 +56,9 @@ namespace ServiceStack.CefGlue
         public string[] Args { get; set; }
         public CefSettings CefSettings { get; set; }
         public CefBrowserSettings CefBrowserSettings { get; set; }
+        public List<ProxyScheme> Schemes { get; set; } = new List<ProxyScheme>();
+        
+        public List<SchemeFactory> SchemeFactories { get; set; } = new List<SchemeFactory>();
         public string StartUrl { get; set; }
         public int? X { get; set; }
         public int? Y { get; set; }
@@ -67,6 +71,7 @@ namespace ServiceStack.CefGlue
         public bool FullScreen { get; set; }
         public bool Kiosk { get; set; }
         public bool Debug { get; set; }
+        
         public Dictionary<string,string> Meta { get; set; }
 
         public bool DevTools
@@ -110,7 +115,27 @@ namespace ServiceStack.CefGlue
         //CefApp
         public Action<CefSchemeRegistrar> OnRegisterCustomSchemes { get; set; }
         public Action<string, CefCommandLine> OnBeforeCommandLineProcessing { get; set; }
+    }
+    
+    public class ProxyScheme
+    {
+        public string Scheme { get; set; } = "https";
+        public string TargetScheme { get; set; }
+        public string Domain { get; set; }
+        public bool AllowCors { get; set; }
+        public List<string> IgnoreHeaders { get; set; } = new List<string>();
+        public Dictionary<string,string> AddHeaders { get; set; } = new Dictionary<string, string>();
+        public CefSchemeOptions? SchemeOptions { get; set; }
         
-        
+        public Action<NameValueCollection> OnResponseHeaders { get; set; }
+    }
+
+    public class SchemeFactory
+    {
+        public string Scheme { get; set; } = "https";
+        public string Domain { get; set; }
+        public CefSchemeHandlerFactory Factory { get; set; }
+        public bool AddCrossOriginWhitelistEntry { get; set; }
+        public CefSchemeOptions? SchemeOptions { get; set; }
     }
 }

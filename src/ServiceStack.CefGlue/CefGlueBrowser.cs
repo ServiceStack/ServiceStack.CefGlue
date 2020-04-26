@@ -6,7 +6,7 @@ namespace ServiceStack.CefGlue
 {
     public class CefGlueBrowser
     {
-        private IntPtr browserWindowHandle;
+        private IntPtr browserWindowHandle = IntPtr.Zero;
         public WebClient Client { get; }
         public CefConfig Config { get; }
         public CefApp App { get; }
@@ -50,11 +50,14 @@ namespace ServiceStack.CefGlue
 
         private void WebBrowser_Created(object sender, EventArgs e)
         {
-            this.CefBrowser = this.WebBrowser.CefBrowser;
-            this.browserWindowHandle = CefBrowser.GetHost().GetWindowHandle();
+            if (browserWindowHandle == IntPtr.Zero) // Main Window on Startup
+            {
+                this.CefBrowser = this.WebBrowser.CefBrowser;
+                this.browserWindowHandle = CefBrowser.GetHost().GetWindowHandle();
 
-            var offsetWidth = Config.Width - 22; //For some reason it's 22px too long when first started
-            CefPlatform.Instance.ResizeWindow(browserWindowHandle, offsetWidth, Config.Height);
+                var offsetWidth = Config.Width - 22; //For some reason it's 22px too long when first started
+                CefPlatform.Instance.ResizeWindow(browserWindowHandle, offsetWidth, Config.Height);
+            }
 
             this.BrowserCreated?.Invoke(this, EventArgs.Empty);
         }

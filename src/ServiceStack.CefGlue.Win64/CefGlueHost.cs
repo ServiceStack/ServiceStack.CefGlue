@@ -89,7 +89,17 @@ namespace ServiceStack.CefGlue.Win64
             protected override void OnBeforeCommandLineProcessing(string processType, CefCommandLine commandLine)
             {
                 context.OnBeforeCommandLineProcessing?.Invoke(processType, commandLine);
-            }            
+            }
+
+            protected override CefRenderProcessHandler GetRenderProcessHandler()
+            {
+                return base.GetRenderProcessHandler();
+            }
+
+            protected override CefBrowserProcessHandler GetBrowserProcessHandler()
+            {
+                return base.GetBrowserProcessHandler();
+            }
         }
     }
 }
