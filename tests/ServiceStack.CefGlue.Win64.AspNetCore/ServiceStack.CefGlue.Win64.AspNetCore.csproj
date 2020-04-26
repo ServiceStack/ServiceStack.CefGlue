@@ -51,11 +51,14 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="index.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="CopyLinkedContentFiles" BeforeTargets="Build">
-    <Copy SourceFiles="%(Content.Identity)"
-          DestinationFiles="$(OutputPath)\%(Content.Link)"
-          SkipUnchangedFiles="true"
-          OverwriteReadOnlyFiles="true" />
+    <Copy SourceFiles="%(Content.Identity)" DestinationFiles="$(OutputPath)\%(Content.Link)" SkipUnchangedFiles="true" OverwriteReadOnlyFiles="true" />
   </Target>
 
 </Project>

@@ -31,7 +31,9 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
                 Args = args,
                 StartUrl = startUrl,
                 HideConsoleWindow = false,
-                Kiosk = true,
+                Width = 1200,
+                Height = 1024,
+                // Kiosk = true,
                 // FullScreen = true,
             };
             

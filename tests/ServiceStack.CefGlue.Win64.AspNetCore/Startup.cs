@@ -12,11 +12,11 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
         {
             app.UseServiceStack(new AppHost());
 
-            app.Run(context =>
-            {
-                context.Response.Redirect("/metadata");
-                return Task.FromResult(0);
-            });
+            // app.Run(context =>
+            // {
+            //     context.Response.Redirect("/");
+            //     return Task.FromResult(0);
+            // });
         }
     }
 
@@ -28,13 +28,13 @@ namespace ServiceStack.CefGlue.Win64.AspNetCore
         {
             Plugins.Add(new SharpPagesFeature());
 
-            Plugins.Add(new ProxyFeature(
-                matchingRequests: req => req.PathInfo.StartsWith("/theverge"),
-                resolveUrl: req => $"https://www.theverge.com" + req.RawUrl.Replace("/theverge", "/")) {
-                IgnoreResponseHeaders = {
-                    "X-Frame-Options"
-                }
-            });
+            // Plugins.Add(new ProxyFeature(
+            //     matchingRequests: req => req.PathInfo.StartsWith("/theverge"),
+            //     resolveUrl: req => $"https://www.theverge.com" + req.RawUrl.Replace("/theverge", "/")) {
+            //     IgnoreResponseHeaders = {
+            //         "X-Frame-Options"
+            //     }
+            // });
         }
     }
 
