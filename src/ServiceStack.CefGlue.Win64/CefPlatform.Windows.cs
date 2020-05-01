@@ -62,7 +62,7 @@ namespace ServiceStack.CefGlue
                     {
                         window.SetStyle(WindowStyles.WS_MAXIMIZE);
                     }
-                    Instance.SetWinFullScreen(window.Handle);
+                    Instance.SetWindowFullScreen(window.Handle);
                 }
                 window.Show();
 
@@ -115,7 +115,7 @@ namespace ServiceStack.CefGlue
             }
         }
 
-        public override void SetWinFullScreen(IntPtr handle)
+        public override void SetWindowFullScreen(IntPtr handle)
         {
             if (handle != IntPtr.Zero)
             {

@@ -16,7 +16,7 @@ namespace ServiceStack.CefGlue
 
         public abstract Rectangle GetClientRectangle(IntPtr handle);
 
-        public abstract void SetWinFullScreen(IntPtr handle);
+        public abstract void SetWindowFullScreen(IntPtr handle);
 
         public abstract void ShowScrollBar(IntPtr handle, bool show);
     }

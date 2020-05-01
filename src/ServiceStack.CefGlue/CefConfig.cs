@@ -56,8 +56,8 @@ namespace ServiceStack.CefGlue
         public string[] Args { get; set; }
         public CefSettings CefSettings { get; set; }
         public CefBrowserSettings CefBrowserSettings { get; set; }
+        public bool EnableCorsScheme { get; set; } = true;
         public List<ProxyScheme> Schemes { get; set; } = new List<ProxyScheme>();
-        
         public List<SchemeFactory> SchemeFactories { get; set; } = new List<SchemeFactory>();
         public string StartUrl { get; set; }
         public int? X { get; set; }
@@ -126,6 +126,7 @@ namespace ServiceStack.CefGlue
         public List<string> IgnoreHeaders { get; set; } = new List<string>();
         public Dictionary<string,string> AddHeaders { get; set; } = new Dictionary<string, string>();
         public CefSchemeOptions? SchemeOptions { get; set; }
+        public Func<string,string> ResolveUrl { get; set; }
         
         public Action<NameValueCollection> OnResponseHeaders { get; set; }
     }

@@ -113,31 +113,31 @@ namespace ServiceStack.CefGlue
 
     public sealed class WebClient : CefClient
     {
-        internal static bool DumpProcessMessages { get; set; }
+        public static bool DumpProcessMessages { get; set; }
 
-        private readonly WebBrowser core;
-        private readonly WebLifeSpanHandler lifeSpanHandler;
-        private readonly WebDisplayHandler displayHandler;
-        private readonly WebLoadHandler loadHandler;
-        private readonly WebKeyboardHandler keyboardHandler;
+        public WebBrowser Core { get; }
+        public WebLifeSpanHandler LifeSpanHandler { get; }
+        public WebDisplayHandler DisplayHandler { get; }
+        public WebLoadHandler LoadHandler { get; }
+        public WebKeyboardHandler KeyboardHandler { get; }
 
         public WebClient(WebBrowser core)
         {
-            this.core = core;
-            lifeSpanHandler = new WebLifeSpanHandler(this.core);
-            displayHandler = new WebDisplayHandler(this.core);
-            loadHandler = new WebLoadHandler(this.core);
-            keyboardHandler = new WebKeyboardHandler(this.core);
+            this.Core = core;
+            LifeSpanHandler = new WebLifeSpanHandler(this.Core);
+            DisplayHandler = new WebDisplayHandler(this.Core);
+            LoadHandler = new WebLoadHandler(this.Core);
+            KeyboardHandler = new WebKeyboardHandler(this.Core);
         }
 
-        protected override CefLifeSpanHandler GetLifeSpanHandler() => lifeSpanHandler;
-        protected override CefDisplayHandler GetDisplayHandler() => displayHandler;
-        protected override CefLoadHandler GetLoadHandler() => loadHandler;
-        protected override CefKeyboardHandler GetKeyboardHandler() => keyboardHandler;
+        protected override CefLifeSpanHandler GetLifeSpanHandler() => LifeSpanHandler;
+        protected override CefDisplayHandler GetDisplayHandler() => DisplayHandler;
+        protected override CefLoadHandler GetLoadHandler() => LoadHandler;
+        protected override CefKeyboardHandler GetKeyboardHandler() => KeyboardHandler;
 
         protected override bool OnProcessMessageReceived(CefBrowser browser, CefFrame frame, CefProcessId sourceProcess, CefProcessMessage message)
         {
-            var result = core.Config.OnProcessMessageReceived?.Invoke(this, browser, sourceProcess, message);
+            var result = Core.Config.OnProcessMessageReceived?.Invoke(this, browser, sourceProcess, message);
             if (result != null)
                 return result.Value;
             
@@ -204,7 +204,7 @@ namespace ServiceStack.CefGlue
         public bool CanGoForward { get; }
     }
 
-    internal sealed class WebLifeSpanHandler : CefLifeSpanHandler
+    public sealed class WebLifeSpanHandler : CefLifeSpanHandler
     {
         private readonly WebBrowser core;
 
@@ -236,7 +236,7 @@ namespace ServiceStack.CefGlue
         }
     }
 
-    internal sealed class WebDisplayHandler : CefDisplayHandler
+    public sealed class WebDisplayHandler : CefDisplayHandler
     {
         private readonly WebBrowser core;
 
@@ -284,7 +284,7 @@ namespace ServiceStack.CefGlue
         }
     }
 
-    internal sealed class WebLoadHandler : CefLoadHandler
+    public sealed class WebLoadHandler : CefLoadHandler
     {
         private readonly WebBrowser core;
 
@@ -300,7 +300,7 @@ namespace ServiceStack.CefGlue
     }
 
     //https://github.com/adobe/webkit/blob/master/Source/WebCore/platform/chromium/KeyboardCodes.h
-    internal static class KeyCodes
+    public static class KeyCodes
     {
         internal const int F5 = 0x74;
         internal const int F11 = 0x7A;
@@ -313,7 +313,7 @@ namespace ServiceStack.CefGlue
         internal const int R = 0x52;
     }
 
-    internal sealed class WebKeyboardHandler : CefKeyboardHandler
+    public sealed class WebKeyboardHandler : CefKeyboardHandler
     {
         private WebBrowser core;
         public WebKeyboardHandler(WebBrowser core) => this.core = core;
