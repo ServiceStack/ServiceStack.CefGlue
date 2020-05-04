@@ -47,6 +47,7 @@ namespace ServiceStack.CefGlue
             HideConsoleWindow = true;
             EnableNavigationKeys = true;
             EnableReload = debug;
+            EnableToggleFullScreen = true;
             Debug = true;
         }
 
@@ -66,8 +67,9 @@ namespace ServiceStack.CefGlue
         public int Height { get; set; }
         public bool CenterToScreen { get; set; }
         public bool HideConsoleWindow { get; set; }
-        public bool EnableNavigationKeys { get; set; } // ALT+Left + ALT+Right
-        public bool EnableReload { get; set; }     // F5 to 
+        public bool EnableNavigationKeys { get; set; }    // ALT+Left + ALT+Right
+        public bool EnableReload { get; set; }            // F5
+        public bool EnableToggleFullScreen { get; set; }  // F11 
         public bool FullScreen { get; set; }
         public bool Kiosk { get; set; }
         public bool Debug { get; set; }
