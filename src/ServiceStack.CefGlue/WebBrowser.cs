@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
 using Xilium.CefGlue;
@@ -7,8 +8,6 @@ namespace ServiceStack.CefGlue
 {
     public sealed class WebBrowser
     {
-        public IntPtr WindowHandle => CefBrowser.GetHost().GetWindowHandle();
-
         private bool created;
 
         public CefClient Client { get; private set; }
@@ -316,10 +315,15 @@ namespace ServiceStack.CefGlue
     public sealed class WebKeyboardHandler : CefKeyboardHandler
     {
         private WebBrowser core;
-        public WebKeyboardHandler(WebBrowser core) => this.core = core;
+        private bool isMaximized;
+        public WebKeyboardHandler(WebBrowser core)
+        {
+            this.core = core;
+            this.isMaximized = core.Config.FullScreen || core.Config.Kiosk;
+        }
 
         private class DevToolsWebClient : CefClient {}
-
+        
         protected override bool OnPreKeyEvent(CefBrowser browser, CefKeyEvent keyEvent, IntPtr os_event, out bool isKeyboardShortcut)
         {
             var ret = core.Config.OnKeyboardPreKeyEvent?.Invoke(browser, keyEvent, os_event);
@@ -333,6 +337,39 @@ namespace ServiceStack.CefGlue
 
             if (keyEvent.EventType == CefKeyEventType.RawKeyDown)
             {
+                isKeyboardShortcut = false;
+                var config = core.Config;
+                if (config.EnableToggleFullScreen)
+                {
+                    if (keyEvent.WindowsKeyCode == KeyCodes.F11)
+                    {
+                        var hWnd = core.Host.ParentHandle;
+                        if (hWnd != IntPtr.Zero)
+                        {
+                            const int gwlStyle = (int) WindowLongFlags.GWL_STYLE;
+                            if (!isMaximized)
+                            {
+                                hWnd.SetWindowLongPtr64(gwlStyle, new IntPtr((long) WindowStyles.WS_POPUP));
+                                hWnd.ShowWindow(ShowWindowCommands.Maximize);
+                            }
+                            else
+                            {
+                                hWnd.SetWindowLongPtr64(gwlStyle, new IntPtr((long) WindowStyles.WS_TILEDWINDOW));
+                                if (hWnd.GetNearestMonitorInfo(out var mi))
+                                {
+                                    var mr = mi.WorkArea;
+                                    var num1 = mr.Width / 2;
+                                    var num2 = mr.Height / 2;
+                                    hWnd.SetPosition(num1 - config.Width / 2, num2 - config.Height / 2, config.Width, config.Height);
+                                }
+                                hWnd.ShowWindow(ShowWindowCommands.Normal);
+                            }
+                            isMaximized = !isMaximized;
+                        }
+                    }
+                    return false;
+                }
+                
                 if (core.Config.DevTools && keyEvent.WindowsKeyCode == KeyCodes.F12)
                 {
                     var host = core.CefBrowser.GetHost();
