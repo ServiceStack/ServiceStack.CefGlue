@@ -7,7 +7,7 @@ namespace ServiceStack.CefGlue
 {
     public sealed class WebBrowser
     {
-        private IntPtr windowHandle;
+        public IntPtr WindowHandle => CefBrowser.GetHost().GetWindowHandle();
 
         private bool created;
 
@@ -302,15 +302,15 @@ namespace ServiceStack.CefGlue
     //https://github.com/adobe/webkit/blob/master/Source/WebCore/platform/chromium/KeyboardCodes.h
     public static class KeyCodes
     {
-        internal const int F5 = 0x74;
-        internal const int F11 = 0x7A;
-        internal const int F12 = 0x7B;
-        internal const int Left = 0x25;
-        internal const int Up = 0x26;
-        internal const int Right = 0x27;
-        internal const int Down = 0x28;
+        public const int F5 = 0x74;
+        public const int F11 = 0x7A;
+        public const int F12 = 0x7B;
+        public const int Left = 0x25;
+        public const int Up = 0x26;
+        public const int Right = 0x27;
+        public const int Down = 0x28;
 
-        internal const int R = 0x52;
+        public const int R = 0x52;
     }
 
     public sealed class WebKeyboardHandler : CefKeyboardHandler
@@ -333,7 +333,7 @@ namespace ServiceStack.CefGlue
 
             if (keyEvent.EventType == CefKeyEventType.RawKeyDown)
             {
-                if (core.Config.DevTools && (keyEvent.WindowsKeyCode == KeyCodes.F11 || keyEvent.WindowsKeyCode == KeyCodes.F12))
+                if (core.Config.DevTools && keyEvent.WindowsKeyCode == KeyCodes.F12)
                 {
                     var host = core.CefBrowser.GetHost();
                     var windowInfo = CefWindowInfo.Create();
