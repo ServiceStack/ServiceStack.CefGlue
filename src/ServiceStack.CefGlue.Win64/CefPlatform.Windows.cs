@@ -41,34 +41,29 @@ namespace ServiceStack.CefGlue
                 Instance.HideConsoleWindow();
 
             var factory = WinapiHostFactory.Init(config.Icon);
-            using (var window = factory.CreateWindow(
+            using var window = factory.CreateWindow(
                 () => new CefGlueHost(config),
                 config.WindowTitle,
-                constructionParams: new FrameWindowConstructionParams()))
+                constructionParams: new FrameWindowConstructionParams());
+            
+            window.SetSize(config.Width, config.Height);
+            if (config.CenterToScreen)
             {
-
-                window.SetSize(config.Width, config.Height);
-                if (config.CenterToScreen)
-                {
-                    window.CenterToScreen();
-                }
-                else if (config.X != null || config.Y != null)
-                {
-                    window.SetPosition(config.X.GetValueOrDefault(), config.Y.GetValueOrDefault());
-                }
-                if (config.Kiosk || config.Kiosk)
-                {
-                    if (config.Kiosk)
-                    {
-                        window.SetStyle(WindowStyles.WS_MAXIMIZE);
-                    }
-                    Instance.SetWindowFullScreen(window.Handle);
-                }
-                window.Show();
-
-                //startTask.Wait();
-                return new EventLoop().Run(window);
+                window.CenterToScreen();
             }
+            else if (config.X != null || config.Y != null)
+            {
+                window.SetPosition(config.X.GetValueOrDefault(), config.Y.GetValueOrDefault());
+            }
+            if (config.FullScreen)
+            {
+                window.SetStyle(WindowStyles.WS_MAXIMIZE);
+                Instance.SetWindowFullScreen(window.Handle);
+            }
+            window.Show();
+
+            //startTask.Wait();
+            return new EventLoop().Run(window);
         }
 
         public override CefSize GetScreenResolution()
@@ -89,9 +84,9 @@ namespace ServiceStack.CefGlue
 
         float GetScalingFactor(IntPtr hdc)
         {
-            int LogicalScreenHeight = GetDeviceCaps(hdc, VERTRES);
-            int PhysicalScreenHeight = GetDeviceCaps(hdc, DESKTOPVERTRES);
-            return (float)PhysicalScreenHeight / (float)LogicalScreenHeight;
+            int logicalScreenHeight = GetDeviceCaps(hdc, VERTRES);
+            int physicalScreenHeight = GetDeviceCaps(hdc, DESKTOPVERTRES);
+            return physicalScreenHeight / (float)logicalScreenHeight;
         }
 
         public override void HideConsoleWindow()

@@ -365,9 +365,9 @@ namespace ServiceStack.CefGlue
                                 hWnd.ShowWindow(ShowWindowCommands.Normal);
                             }
                             isMaximized = !isMaximized;
+                            return false;
                         }
                     }
-                    return false;
                 }
                 
                 if (core.Config.DevTools && keyEvent.WindowsKeyCode == KeyCodes.F12)
