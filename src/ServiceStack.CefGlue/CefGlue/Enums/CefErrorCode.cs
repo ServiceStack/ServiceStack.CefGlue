@@ -179,6 +179,23 @@ namespace Xilium.CefGlue
         CLEARTEXT_NOT_PERMITTED = -29,
 
         /// <summary>
+        /// The request was blocked by a Content Security Policy.
+        /// </summary>
+        BLOCKED_BY_CSP = -30,
+
+        /// <summary>
+        /// The request was blocked because of no H/2 or QUIC session.
+        /// </summary>
+        H2_OR_QUIC_REQUIRED = -31,
+
+        /// <summary>
+        /// The request was blocked because it is a private network request coming from
+        /// an insecure context in a less private IP address space. This is used to
+        /// enforce CORS-RFC1918: https://wicg.github.io/cors-rfc1918.
+        /// </summary>
+        INSECURE_PRIVATE_NETWORK_REQUEST = -32,
+
+        /// <summary>
         /// A connection was closed (corresponding to a TCP FIN).
         /// </summary>
         CONNECTION_CLOSED = -100,
@@ -1139,6 +1156,12 @@ namespace Xilium.CefGlue
         QUIC_CERT_ROOT_NOT_KNOWN = -380,
 
         /// <summary>
+        /// A GOAWAY frame has been received indicating that the request has not been
+        /// processed and is therefore safe to retry on a different connection.
+        /// </summary>
+        QUIC_GOAWAY_REQUEST_CAN_BE_RETRIED = -381,
+
+        /// <summary>
         /// The cache does not have the requested entry.
         /// </summary>
         CACHE_MISS = -400,
@@ -1244,6 +1267,19 @@ namespace Xilium.CefGlue
         /// An error occurred while handling a Web Bundle source.
         /// </summary>
         INVALID_WEB_BUNDLE = -505,
+
+        /// <summary>
+        /// A Trust Tokens protocol operation-executing request failed for one of a
+        /// number of reasons (precondition failure, internal error, bad response).
+        /// </summary>
+        TRUST_TOKEN_OPERATION_FAILED = -506,
+
+        /// <summary>
+        /// When handling a Trust Tokens protocol operation-executing request, the system
+        /// found that the request's desired Trust Tokens results were already present in
+        /// a local cache; as a result, the main request was cancelled.
+        /// </summary>
+        TRUST_TOKEN_OPERATION_CACHE_HIT = -507,
 
         // *** Code -600 is reserved (was FTP_PASV_COMMAND_FAILED). ***
 

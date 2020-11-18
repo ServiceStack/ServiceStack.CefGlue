@@ -9,8 +9,7 @@
     /// <summary>
     /// Class that manages custom scheme registrations.
     /// </summary>
-    public sealed unsafe partial class 
-        CefSchemeRegistrar
+    public sealed unsafe partial class CefSchemeRegistrar
     {
         internal void ReleaseObject()
         {
