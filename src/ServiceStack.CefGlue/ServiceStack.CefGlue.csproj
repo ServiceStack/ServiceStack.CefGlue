@@ -10,6 +10,7 @@
       .NET Standard 2.0 builds of Xilium.CefGlue for creating .NET Core Chromium Desktop Apps
     </PackageDescription>
     <PackageTags>CEF;ServiceStack;.NET;Core;Desktop;Chromium;WebApps;CefGlue</PackageTags>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
     <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

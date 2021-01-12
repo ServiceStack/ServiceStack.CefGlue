@@ -15,3 +15,4 @@ POPD
 
 REM copy-xilian.bat
 REM copy-cef.bat
+REM CI Server: update c:\src\cef_binary_windows64 + c:\src\cef_binary_windows64_client + run ServiceStack.CefGlue build task
