@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageId>ServiceStack.CefGlue</PackageId>
     <AssemblyName>ServiceStack.CefGlue</AssemblyName>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Title>.NET Standard 2.0 builds of CefGlue</Title>
     <PackageDescription>

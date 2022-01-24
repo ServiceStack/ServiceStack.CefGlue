@@ -3,7 +3,7 @@
   <!-- dotnet publish -c release -r win-x64 -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <Platforms>x64</Platforms>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.*" />
 <!--    <PackageReference Include="ServiceStack.CefGlue.Win64" Version="5.*" />-->
     <PackageReference Include="WinApi" Version="4.0.0" />
-    <PackageReference Include="ServiceStack" Version="5.*" />
+    <PackageReference Include="ServiceStack" Version="6.*" />
   </ItemGroup>
 
   <ItemGroup>
