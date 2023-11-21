@@ -3,7 +3,7 @@
   <!-- dotnet publish -c release -r win-x64 -->
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <Platforms>x64</Platforms>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
